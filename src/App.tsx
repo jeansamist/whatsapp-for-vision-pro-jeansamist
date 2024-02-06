@@ -6,11 +6,11 @@ import wa from "./assets/images/wa.png";
 
 function App() {
   return (
-    <main className="flex items-center justify-center w-full min-h-screen">
+    <main className="flex items-center justify-center w-full min-h-screen py-16 pt-32 2xl:p-0">
       <h1 className="block lg:hidden text-3xl font-bold text-center leading-loose">
         :( Your window do not have the required size
       </h1>
-      <div className="window hidden w-[80%] xl:w-[1100px] 2xl:w-[1200px] bg-app-window rounded-[46px] backdrop-blur-xl relative lg:flex -translate-y-4">
+      <div className="window hidden w-[80%] lg:w-[900px] xl:w-[1100px] 2xl:w-[1200px] bg-app-window rounded-[46px] backdrop-blur-xl relative lg:flex -translate-y-4">
         <div className="bg-app-window glass  rounded-full p-3 space-y-3 absolute top-1/2 -left-6 -translate-x-full -translate-y-1/2 z-40 backdrop-blur-2xl">
           <div className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors bg-app-window hover:bg-app-window">
             <svg
