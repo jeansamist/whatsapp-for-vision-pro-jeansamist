@@ -1,18 +1,61 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { Avatar } from "./assets/components/avatar";
-import { MsgReceve, MsgSend, Vocal } from "./assets/components/chat";
+// import { MsgReceve, MsgSend, Vocal } from "./assets/components/chat";
 import { Sidebar } from "./assets/components/sidebar";
-import { CHATS } from "./assets/helpers/chats";
 import wa from "./assets/images/wa.png";
+import { useChat, useMessages } from "./store";
+import { useState } from "react";
+import { MsgSend } from "./assets/components/chat";
 
 function App() {
+  const { messages } = useMessages();
+  const { users, user } = useChat();
+  const [msg, setmsg] = useState<string>();
   return (
     <main className="flex items-center justify-center w-full min-h-screen py-16 pt-32 2xl:p-0">
       <h1 className="block lg:hidden text-3xl font-bold text-center leading-loose">
         :( Your window do not have the required size
       </h1>
       <div className="window hidden w-[80%] lg:w-[900px] xl:w-[1100px] 2xl:w-[1200px] bg-app-window rounded-[46px] backdrop-blur-xl relative lg:flex -translate-y-4">
-        <div className="bg-app-window glass  rounded-full p-3 space-y-3 absolute top-1/2 -left-6 -translate-x-full -translate-y-1/2 z-40 backdrop-blur-2xl">
-          <div className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors bg-app-window hover:bg-app-window">
+        <motion.div
+          variants={{
+            hidden: {
+              opacity: 0,
+              transition: {
+                // duration: 1,
+                when: "beforeChildren",
+              },
+            },
+            visible: {
+              opacity: 1,
+              transition: {
+                duration: 1,
+                staggerChildren: 0.2,
+                // when: "afterChildren",
+              },
+            },
+          }}
+          initial={"hidden"}
+          animate={"visible"}
+          className="bg-app-window glass  rounded-full p-3 space-y-3 absolute top-1/2 -left-6 -translate-x-full -translate-y-1/2 z-40 backdrop-blur-2xl"
+        >
+          <motion.div
+            variants={{
+              hidden: {
+                x: -24,
+                opacity: 0,
+              },
+              visible: {
+                x: 0,
+                opacity: 1,
+                transition: {
+                  duration: 1,
+                  // when: "afterChildren",
+                },
+              },
+            }}
+            className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors bg-app-window hover:bg-app-window"
+          >
             <svg
               width="28"
               height="28"
@@ -29,8 +72,24 @@ function App() {
                 fill="#25D366"
               />
             </svg>
-          </div>
-          <div className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary">
+          </motion.div>
+          <motion.div
+            variants={{
+              hidden: {
+                x: -24,
+                opacity: 0,
+              },
+              visible: {
+                x: 0,
+                opacity: 1,
+                transition: {
+                  duration: 1,
+                  // when: "afterChildren",
+                },
+              },
+            }}
+            className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary"
+          >
             <svg
               width="28"
               height="28"
@@ -44,8 +103,24 @@ function App() {
               />
               <path d="M14 13.4896C15.7591 13.4896 17.1838 12.0175 17.1838 10.2068C17.1838 8.42371 15.7664 7 14 7C12.2555 7 10.8162 8.44444 10.8162 10.2206C10.8235 12.0245 12.2409 13.4896 14 13.4896ZM5.56802 13.6486C7.10177 13.6486 8.33749 12.3562 8.33749 10.7597C8.33749 9.20468 7.10177 7.94684 5.56802 7.94684C4.04881 7.94684 2.79128 9.22541 2.79855 10.7666C2.79855 12.3631 4.04154 13.6486 5.56802 13.6486ZM22.432 13.6486C23.9512 13.6486 25.1942 12.3631 25.2015 10.7666C25.2087 9.22541 23.9512 7.94684 22.432 7.94684C20.8982 7.94684 19.6552 9.20468 19.6552 10.7597C19.6552 12.3562 20.8982 13.6486 22.432 13.6486ZM14 12.2802C12.9969 12.2802 12.1464 11.3817 12.1464 10.2137C12.1464 9.08719 12.9896 8.20946 14 8.20946C15.0177 8.20946 15.8536 9.07337 15.8536 10.2068C15.8536 11.3679 15.0104 12.2802 14 12.2802ZM5.56802 12.453C4.74663 12.453 4.04881 11.7065 4.04881 10.7666C4.04881 9.86816 4.73936 9.13557 5.56802 9.13557C6.41122 9.13557 7.0945 9.85433 7.0945 10.7597C7.0945 11.7065 6.39668 12.453 5.56802 12.453ZM22.432 12.453C21.5961 12.453 20.9055 11.7065 20.9055 10.7597C20.9055 9.85433 21.5888 9.13557 22.432 9.13557C23.2534 9.13557 23.9512 9.86816 23.9512 10.7666C23.9512 11.7065 23.2534 12.453 22.432 12.453ZM1.57009 20H7.21807C6.81828 19.7788 6.54933 19.2743 6.60021 18.8182H1.50467C1.36656 18.8182 1.30841 18.756 1.30841 18.6385C1.30841 17.0558 3.25649 15.5492 5.56075 15.5492C6.37487 15.5492 7.18899 15.7427 7.81412 16.0744C8.06127 15.7358 8.36656 15.4455 8.76636 15.1967C7.8432 14.6576 6.6947 14.3674 5.56075 14.3674C2.48598 14.3674 0 16.4545 0 18.7491C0 19.5784 0.523364 20 1.57009 20ZM26.4299 20C27.4766 20 28 19.5784 28 18.7491C28 16.4545 25.5068 14.3674 22.432 14.3674C21.3053 14.3674 20.1495 14.6576 19.2336 15.1967C19.6334 15.4455 19.9387 15.7358 20.1786 16.0744C20.8037 15.7427 21.6251 15.5492 22.432 15.5492C24.7362 15.5492 26.6916 17.0558 26.6916 18.6385C26.6916 18.756 26.6334 18.8182 26.4953 18.8182H21.3925C21.4434 19.2743 21.1817 19.7788 20.7819 20H26.4299ZM9.47144 20H18.5286C19.7861 20 20.3894 19.6199 20.3894 18.8044C20.3894 16.9038 17.8962 14.3743 14 14.3743C10.1038 14.3743 7.60332 16.9038 7.60332 18.8044C7.60332 19.6199 8.21391 20 9.47144 20ZM9.23884 18.7905C9.07165 18.7905 9.00623 18.7352 9.00623 18.6108C9.00623 17.5534 10.8017 15.5837 14 15.5837C17.1983 15.5837 18.9938 17.5534 18.9938 18.6108C18.9938 18.7352 18.9284 18.7905 18.7539 18.7905H9.23884Z" />
             </svg>
-          </div>
-          <div className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary">
+          </motion.div>
+          <motion.div
+            variants={{
+              hidden: {
+                x: -24,
+                opacity: 0,
+              },
+              visible: {
+                x: 0,
+                opacity: 1,
+                transition: {
+                  duration: 1,
+                  // when: "afterChildren",
+                },
+              },
+            }}
+            className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary"
+          >
             <svg
               width="28"
               height="28"
@@ -106,8 +181,24 @@ function App() {
                 className="fill-app-text-secondary"
               />
             </svg>
-          </div>
-          <div className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary">
+          </motion.div>
+          <motion.div
+            variants={{
+              hidden: {
+                x: -24,
+                opacity: 0,
+              },
+              visible: {
+                x: 0,
+                opacity: 1,
+                transition: {
+                  duration: 1,
+                  // when: "afterChildren",
+                },
+              },
+            }}
+            className="rounded-full min-w-11 h-11 flex items-center justify-center cursor-pointer transition-colors hover:bg-app-window text-app-text-secondary"
+          >
             <svg
               width="28"
               height="28"
@@ -125,13 +216,13 @@ function App() {
                 className="fill-app-text-secondary"
               />
             </svg>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
         <div className="bg-app-window glass  rounded-full p-3 flex gap-3 absolute -bottom-6 left-1/2 translate-y-full -translate-x-1/2 z-40 backdrop-blur-2xl w-2/5 justify-between">
           <div className="flex gap-3 items-center">
-            <Avatar image={CHATS[2].image} />
+            <Avatar image={users[2].image} />
             <div className="flex flex-col h-[43px] justify-between">
-              <h3 className=" font-medium">{CHATS[2].name}</h3>
+              <h3 className=" font-medium">{users[2].name}</h3>
               <span className="text-xs text-app-text-secondary flex items-center gap-1">
                 Video call
               </span>
@@ -181,12 +272,12 @@ function App() {
           </div>
         </div>
         <Sidebar />
-        <div className="chats w-[70%] h-full flex flex-col">
+        <div className="users w-[70%] h-full flex flex-col">
           <header className="px-6 py-5 border-b border-app-hovered-2 flex justify-between">
             <div className="flex gap-3 items-center">
-              <Avatar status image={CHATS[0].image} />
+              <Avatar status={user.status} image={user.image} />
               <div className="flex flex-col h-[50px] justify-between">
-                <h3 className="text-3xl font-bold">{CHATS[0].name}</h3>
+                <h3 className="text-3xl font-bold">{user.name}</h3>
                 <span className="text-xs text-app-text-secondary flex items-center gap-1">
                   Online
                 </span>
@@ -225,18 +316,28 @@ function App() {
             </div>
           </header>
           <div className="h-full overflow-y-auto overflow-x-hiddenp px-6 py-3">
-            <div className=" flex flex-col justify-end space-y-6 min-h-full">
-              <MsgSend
-                time={"11:52"}
-                content={<Vocal image={CHATS[0].image} />}
-              />
-              <MsgReceve
-                time={"11:52"}
-                content={<Vocal image={CHATS[0].image} />}
-              />
-              <MsgSend time={"11:52"} content={"Hello !"} />
-              <MsgReceve time={"11:52"} content={"Hello !"} />
-            </div>
+            <AnimatePresence>
+              <motion.div
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                  },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      duration: 1,
+                      staggerChildren: 0.2,
+                    },
+                  },
+                }}
+                initial={"hidden"}
+                animate={"visible"}
+                exit={"hidden"}
+                className=" flex flex-col justify-end space-y-6 min-h-full"
+              >
+                {messages}
+              </motion.div>
+            </AnimatePresence>
           </div>
           <div className="px-6 pt-3 pb-6 ">
             <div className="bg-app-window rounded-full glass p-3 flex gap-3">
@@ -280,22 +381,49 @@ function App() {
               </div>
               <input
                 type="text"
+                value={msg}
+                onChange={(e) => setmsg(e.target.value)}
                 placeholder="Type a message"
                 className="msg-input bg-app-sidebar py-2 w-[calc(100%-144px-24px)] px-4 font-medium outline-none text-app-foreground h-11 rounded-xl placeholder:text-app-text-secondary placeholder:opacity-70"
               />
-              <div className="rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors bg-[var(--primary-opact-2)] hover:bg-app-primary glass-green">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 28 28"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M14 16.0889C15.9863 16.0889 17.375 14.6035 17.375 12.4766V7.00977C17.375 4.88281 15.9863 3.39746 14 3.39746C12.0225 3.39746 10.625 4.88281 10.625 7.00977V12.4766C10.625 14.6035 12.0225 16.0889 14 16.0889ZM14 14.4629C12.9717 14.4629 12.3213 13.6719 12.3213 12.5117V6.97461C12.3213 5.81445 12.9717 5.02344 14 5.02344C15.0283 5.02344 15.6787 5.81445 15.6787 6.97461V12.5117C15.6787 13.6719 15.0283 14.4629 14 14.4629ZM9.95703 22.7861H18.043C18.5088 22.7861 18.8955 22.4082 18.8955 21.9512C18.8955 21.4854 18.5088 21.1162 18.043 21.1162H14.8174V19.332C18.2891 18.998 20.7148 16.5107 20.7148 12.8721V11.1406C20.7148 10.6748 20.3457 10.3145 19.8799 10.3145C19.4141 10.3145 19.0273 10.6748 19.0273 11.1406V12.8105C19.0273 15.8076 16.9971 17.7764 14 17.7764C11.0029 17.7764 8.97266 15.8076 8.97266 12.8105V11.1406C8.97266 10.6748 8.59473 10.3145 8.12891 10.3145C7.66309 10.3145 7.28516 10.6748 7.28516 11.1406V12.8721C7.28516 16.5107 9.71094 18.998 13.1826 19.332V21.1162H9.95703C9.49121 21.1162 9.10449 21.4854 9.10449 21.9512C9.10449 22.4082 9.49121 22.7861 9.95703 22.7861Z"
-                    fill="#FEFEFE"
-                  />
-                </svg>
+              <div
+                onClick={() =>
+                  useMessages.setState((old) => ({
+                    messages: [
+                      ...old.messages,
+                      <MsgSend content={msg} time="11:58" />,
+                    ],
+                  }))
+                }
+                className="rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors bg-[var(--primary-opact-2)] hover:bg-app-primary glass-green"
+              >
+                {!msg ? (
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14 16.0889C15.9863 16.0889 17.375 14.6035 17.375 12.4766V7.00977C17.375 4.88281 15.9863 3.39746 14 3.39746C12.0225 3.39746 10.625 4.88281 10.625 7.00977V12.4766C10.625 14.6035 12.0225 16.0889 14 16.0889ZM14 14.4629C12.9717 14.4629 12.3213 13.6719 12.3213 12.5117V6.97461C12.3213 5.81445 12.9717 5.02344 14 5.02344C15.0283 5.02344 15.6787 5.81445 15.6787 6.97461V12.5117C15.6787 13.6719 15.0283 14.4629 14 14.4629ZM9.95703 22.7861H18.043C18.5088 22.7861 18.8955 22.4082 18.8955 21.9512C18.8955 21.4854 18.5088 21.1162 18.043 21.1162H14.8174V19.332C18.2891 18.998 20.7148 16.5107 20.7148 12.8721V11.1406C20.7148 10.6748 20.3457 10.3145 19.8799 10.3145C19.4141 10.3145 19.0273 10.6748 19.0273 11.1406V12.8105C19.0273 15.8076 16.9971 17.7764 14 17.7764C11.0029 17.7764 8.97266 15.8076 8.97266 12.8105V11.1406C8.97266 10.6748 8.59473 10.3145 8.12891 10.3145C7.66309 10.3145 7.28516 10.6748 7.28516 11.1406V12.8721C7.28516 16.5107 9.71094 18.998 13.1826 19.332V21.1162H9.95703C9.49121 21.1162 9.10449 21.4854 9.10449 21.9512C9.10449 22.4082 9.49121 22.7861 9.95703 22.7861Z"
+                      fill="#FEFEFE"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15.3359 23.4102C16.0215 23.4102 16.4961 22.8564 16.8213 22.0127L22.6221 6.83398C22.7715 6.44727 22.8594 6.10449 22.8594 5.80566C22.8594 5.18164 22.4639 4.78613 21.8311 4.78613C21.541 4.78613 21.1895 4.86523 20.8027 5.01465L5.5625 10.8506C4.80664 11.1406 4.23535 11.6152 4.23535 12.3008C4.23535 13.1357 4.85938 13.4521 5.7207 13.7158L10.2734 15.1045C10.8887 15.2979 11.249 15.2891 11.6797 14.8848L21.4707 5.81445C21.5938 5.7002 21.7432 5.71777 21.8398 5.80566C21.9365 5.89355 21.9365 6.05176 21.8311 6.16602L12.7783 15.9746C12.4092 16.3877 12.374 16.7744 12.5586 17.3896L13.9121 21.8545C14.1758 22.751 14.4922 23.4102 15.3359 23.4102Z"
+                      fill="#FEFEFE"
+                    />
+                  </svg>
+                )}
               </div>
             </div>
           </div>

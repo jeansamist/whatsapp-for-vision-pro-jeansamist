@@ -12,7 +12,7 @@ export const Avatar: FunctionComponent<{ image: string; status?: boolean }> = ({
         status && "border-app-primary border-[3px]"
       )}
     >
-      <img src={image} alt="" className="w-full" />
+      <img src={image} alt="" className="w-full rounded-full" />
     </div>
   );
 };

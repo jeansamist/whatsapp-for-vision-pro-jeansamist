@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { CHATS } from "../helpers/chats";
 import { Avatar } from "./avatar";
 import { Chat } from "./chat";
-
+import { motion } from "framer-motion";
 export const Sidebar: FunctionComponent = () => {
   return (
     <nav className="sidebar w-[30%] bg-app-sidebar h-full overflow-y-auto overflow-x-hidden relative">
@@ -34,11 +34,32 @@ export const Sidebar: FunctionComponent = () => {
           </svg>
         </div>
       </div>
-      <div className="px-3 py-4 space-y-3">
+      <motion.div
+        variants={{
+          hidden: {
+            opacity: 0,
+            transition: {
+              // duration: 1,
+              when: "beforeChildren",
+            },
+          },
+          visible: {
+            opacity: 1,
+            transition: {
+              duration: 1,
+              staggerChildren: 0.2,
+              // when: "afterChildren",
+            },
+          },
+        }}
+        initial={"hidden"}
+        animate={"visible"}
+        className="px-3 py-4 space-y-3"
+      >
         {CHATS.map((props, key) => (
           <Chat {...props} key={key} />
         ))}
-      </div>
+      </motion.div>
       <div className="chats"></div>
     </nav>
   );
